@@ -40,8 +40,8 @@ app.get("*", (req, res) => {
 const port = 3000;
 const server = app.listen(port, () => console.log(`App is listening on port ${port}`));
 
-const exitJob = cron.schedule('*/10 * * * *', () => {
-  console.log("Exiting the process.");
+//const exitJob = cron.schedule('*/10 * * * *', () => {
+  /*console.log("Exiting the process.");
   server.close(() => {
     process.exit(0);
   });
@@ -49,4 +49,29 @@ const exitJob = cron.schedule('*/10 * * * *', () => {
   scheduled: false
 });
 
-exitJob.start();
+exitJob.start();*/
+//-----------------------------------------------------------------
+
+const axios = require('axios');
+// Assuming you have `moment` and `chalk` modules installed based on the comments
+
+const pingWebsite = () => {
+  const websiteUrl = 'https://chat-a.onrender.com';
+
+  axios.get(websiteUrl)
+    .then(() => {
+      // Uncomment the following lines if you want to log the success with formatted time
+      // const formattedTime = moment.tz('Asia/Manila').format('MM/DD/YY hh:mm A');
+      // console.log(chalk.green(`[PING] Website pinged at: ${formattedTime}`));
+    })
+    .catch((error) => {
+      console.error('Failed to ping website:', error);
+    });
+};
+
+// Initial ping
+pingWebsite();
+
+// Schedule pinging every 60 seconds (60 * 1000 milliseconds)
+setInterval(pingWebsite, 60 * 1000);
+
